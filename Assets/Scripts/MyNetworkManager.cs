@@ -5,17 +5,22 @@ using UnityEngine;
 
 public class MyNetworkManager : NetworkManager
 {
-	public override void OnClientConnect(NetworkConnection conn)
-	{
-		base.OnClientConnect(conn);
-
-		Debug.Log("I connected to a server!");
-	}
-
 	public override void OnServerAddPlayer(NetworkConnection conn)
 	{
 		base.OnServerAddPlayer(conn);
 
-		Debug.Log("New Player conected to a server. (" + numPlayers + " players)");
+		MyNetworkPlayer player = conn.identity.GetComponent<MyNetworkPlayer>();
+
+		player.SetDisplayName($"Player {numPlayers}");
+		player.SetDisplayColor(RandomColor());
+	}
+
+	private Color RandomColor()
+	{
+		return new Color(
+			Random.Range(0f, 1f),
+			Random.Range(0f, 1f),
+			Random.Range(0f, 1f)
+		);
 	}
 }
